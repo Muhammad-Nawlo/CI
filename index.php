@@ -1,0 +1,2 @@
+<?php
+//bad comment
