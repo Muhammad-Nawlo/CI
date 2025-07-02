@@ -1,7 +1,9 @@
 name: Laravel Pint
 
 on:
-  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   laravel-pint:
@@ -10,11 +12,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          ref: ${{github.head_ref}}
 
       - name: Setup PHP and Composer
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           tools: composer:v2
 
       - name: Install Laravel Pint
@@ -24,4 +29,9 @@ jobs:
         run: pint
 
       - name: Push changes if exist to repo
-        run: echo "Hey from laravel pint action"
+        run: |
+          git config user.name "Muhammad_Nawlo"
+          git config user.email "nawlomuhammadit@gmail.com"
+          git add .
+          git commit -m "laravel pint" || exit 0
+          git push
